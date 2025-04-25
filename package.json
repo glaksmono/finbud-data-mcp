@@ -1,6 +1,6 @@
 {
   "name": "finbud-data",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "The official TypeScript library for the Finbud Data API",
   "author": "Finbud Data <>",
   "types": "dist/index.d.ts",
