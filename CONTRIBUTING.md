@@ -42,15 +42,15 @@ If you’d like to use the repository from source, you can either install from g
 To install via git:
 
 ```sh
-$ npm install git+ssh://git@github.com:stainless-sdks/finbud-data-typescript.git
+$ npm install git+ssh://git@github.com:glaksmono/finbud-data-mcp.git
 ```
 
 Alternatively, to link a local copy of the repo:
 
 ```sh
 # Clone
-$ git clone https://www.github.com/stainless-sdks/finbud-data-typescript
-$ cd finbud-data-typescript
+$ git clone https://www.github.com/glaksmono/finbud-data-mcp
+$ cd finbud-data-mcp
 
 # With yarn
 $ yarn link
