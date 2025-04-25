@@ -27,7 +27,8 @@ For clients with a configuration JSON, it might look something like this:
       "command": "npx",
       "args": ["-y", "finbud-data-mcp"],
       "env": {
-        "FINBUD_DATA_API_KEY": "My API Key"
+        "FINBUD_DATA_API_KEY": "My API Key",
+        "MCP_SERVER_URL": "https://data.finbud.ai/api"
       }
     }
   }
