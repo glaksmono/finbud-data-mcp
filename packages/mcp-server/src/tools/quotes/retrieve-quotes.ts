@@ -24,8 +24,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { symbol } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { symbol, ...body } = args as any;
   return client.quotes.retrieve(symbol);
 };
 
