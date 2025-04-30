@@ -99,8 +99,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { underlyingAsset, ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { underlyingAsset, ...body } = args as any;
   return client.options.snapshot.retrieveChain(underlyingAsset, body);
 };
 

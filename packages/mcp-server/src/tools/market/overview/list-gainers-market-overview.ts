@@ -19,8 +19,7 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const {} = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
   return client.market.overview.listGainers();
 };
 
