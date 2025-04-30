@@ -42,8 +42,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { timeframe, ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { timeframe, ...body } = args as any;
   return client.charts.retrieveHistorical(timeframe, body);
 };
 
