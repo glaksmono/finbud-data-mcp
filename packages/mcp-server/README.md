@@ -28,7 +28,7 @@ For clients with a configuration JSON, it might look something like this:
       "args": ["-y", "finbud-data-mcp", "--client=claude"],
       "env": {
         "FINBUD_DATA_API_KEY": "My API Key",
-        "MCP_SERVER_URL": "https://data.finbud.ai/api"
+        "FINBUD_DATA_BASE_URL": "https://data.finbud.ai/api"
       }
     }
   }
