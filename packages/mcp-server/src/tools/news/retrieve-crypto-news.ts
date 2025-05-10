@@ -28,8 +28,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const body = args as any;
   return client.news.retrieveCrypto(body);
 };
 
