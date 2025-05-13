@@ -47,8 +47,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { interval, ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { interval, ...body } = args as any;
   return client.technicals.retrieveIndicatorData(interval, body);
 };
 

@@ -34,8 +34,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { name, ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { name, ...body } = args as any;
   return client.economics.getIndicatorData(name, body);
 };
 

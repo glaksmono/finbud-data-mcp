@@ -23,8 +23,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { optionsTicker } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { optionsTicker, ...body } = args as any;
   return client.options.trades.retrieveLast(optionsTicker);
 };
 
