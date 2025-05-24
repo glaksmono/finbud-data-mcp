@@ -37,8 +37,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { symbol, ...body } = args;
+export const handler = (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { symbol, ...body } = args as any;
   return client.financials.retrieveKeyMetrics(symbol, body);
 };
 
