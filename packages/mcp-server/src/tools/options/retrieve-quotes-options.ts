@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'options',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/quotes/{optionsTicker}',
+  operationId: 'getOptionsQuotes',
 };
 
 export const tool: Tool = {

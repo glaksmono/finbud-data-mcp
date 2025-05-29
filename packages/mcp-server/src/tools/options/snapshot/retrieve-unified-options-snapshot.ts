@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'options.snapshot',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/snapshot/unified',
+  operationId: 'getUnifiedOptionSnapshot',
 };
 
 export const tool: Tool = {

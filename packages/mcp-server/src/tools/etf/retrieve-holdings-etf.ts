@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'etf',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/etf/holdings/{symbol}',
+  operationId: 'getEtfHoldings',
 };
 
 export const tool: Tool = {

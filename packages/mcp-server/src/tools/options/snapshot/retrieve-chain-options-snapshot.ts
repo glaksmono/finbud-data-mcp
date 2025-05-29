@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'options.snapshot',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/snapshot/chain/{underlyingAsset}',
+  operationId: 'getOptionChainSnapshot',
 };
 
 export const tool: Tool = {

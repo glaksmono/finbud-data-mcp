@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'insider_trading',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/insider-trading/{symbol}',
+  operationId: 'getInsiderTrading',
 };
 
 export const tool: Tool = {

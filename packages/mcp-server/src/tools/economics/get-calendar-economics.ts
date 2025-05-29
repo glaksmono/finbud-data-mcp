@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'economics',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/economics/calendar',
+  operationId: 'getEconomicCalendar',
 };
 
 export const tool: Tool = {

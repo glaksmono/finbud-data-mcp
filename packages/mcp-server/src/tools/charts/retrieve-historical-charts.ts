@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'charts',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/charts/{symbol}/{timeframe}',
+  operationId: 'getHistoricalChartData',
 };
 
 export const tool: Tool = {

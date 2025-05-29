@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'financials',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/financials/balance-sheet/{symbol}',
+  operationId: 'getBalanceSheet',
 };
 
 export const tool: Tool = {

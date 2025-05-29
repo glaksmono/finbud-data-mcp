@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'economics',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/economics/indicators/{name}',
+  operationId: 'getEconomicIndicator',
 };
 
 export const tool: Tool = {

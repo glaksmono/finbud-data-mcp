@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'financials',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/financials/key-metrics/{symbol}',
+  operationId: 'getKeyMetrics',
 };
 
 export const tool: Tool = {

@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'quotes',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/quotes/{symbol}',
+  operationId: 'getFullQuotes',
 };
 
 export const tool: Tool = {

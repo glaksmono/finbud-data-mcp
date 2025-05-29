@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'options.snapshot',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/snapshot/contract/{underlyingAsset}/{optionContract}',
+  operationId: 'getOptionContractSnapshot',
 };
 
 export const tool: Tool = {
