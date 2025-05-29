@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'options.trades',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/trades/last/{optionsTicker}',
+  operationId: 'getLastOptionTrade',
 };
 
 export const tool: Tool = {

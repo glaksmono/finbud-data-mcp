@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'company.revenue_segmentation',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/company/revenue-segmentation/product/{symbol}',
+  operationId: 'getRevenueByProductSegment',
 };
 
 export const tool: Tool = {

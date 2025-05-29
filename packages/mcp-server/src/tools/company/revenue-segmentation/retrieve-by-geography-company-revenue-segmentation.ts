@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'company.revenue_segmentation',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/company/revenue-segmentation/geography/{symbol}',
+  operationId: 'getRevenueByGeographySegment',
 };
 
 export const tool: Tool = {

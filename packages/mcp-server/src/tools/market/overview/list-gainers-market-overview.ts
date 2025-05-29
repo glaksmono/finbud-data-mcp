@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'market.overview',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/market/overview/gainers',
+  operationId: 'getMarketGainers',
 };
 
 export const tool: Tool = {

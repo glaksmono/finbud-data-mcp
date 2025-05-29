@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'government.congress',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/government/congress/disclosure',
+  operationId: 'getHouseDisclosure',
 };
 
 export const tool: Tool = {

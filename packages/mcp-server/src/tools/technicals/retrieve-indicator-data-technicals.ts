@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'technicals',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/technicals/{indicator}/{symbol}/{interval}',
+  operationId: 'getTechnicalIndicator',
 };
 
 export const tool: Tool = {

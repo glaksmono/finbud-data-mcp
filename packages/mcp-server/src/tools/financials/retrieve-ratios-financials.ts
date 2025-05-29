@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'financials',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/financials/ratios/{symbol}',
+  operationId: 'getFinancialRatios',
 };
 
 export const tool: Tool = {

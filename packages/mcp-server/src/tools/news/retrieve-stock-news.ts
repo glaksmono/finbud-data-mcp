@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   resource: 'news',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/news/stock/{symbol}',
+  operationId: 'getStockNews',
 };
 
 export const tool: Tool = {
