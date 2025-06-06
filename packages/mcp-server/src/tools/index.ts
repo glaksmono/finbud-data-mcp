@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import FinbudData from 'finbud-data';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Metadata, Endpoint, HandlerFunction } from './types';
+
+export { Metadata, Endpoint, HandlerFunction };
 
 import retrieve_estimates_analysts from './analysts/retrieve-estimates-analysts';
 import retrieve_price_targets_analysts from './analysts/retrieve-price-targets-analysts';
@@ -39,24 +40,6 @@ import retrieve_last_options_trades from './options/trades/retrieve-last-options
 import retrieve_quotes from './quotes/retrieve-quotes';
 import general_search_search from './search/general-search-search';
 import retrieve_indicator_data_technicals from './technicals/retrieve-indicator-data-technicals';
-
-export type HandlerFunction = (client: FinbudData, args: Record<string, unknown> | undefined) => Promise<any>;
-
-export type Metadata = {
-  resource: string;
-  operation: 'read' | 'write';
-  tags: string[];
-
-  httpMethod?: string;
-  httpPath?: string;
-  operationId?: string;
-};
-
-export type Endpoint = {
-  metadata: Metadata;
-  tool: Tool;
-  handler: HandlerFunction;
-};
 
 export const endpoints: Endpoint[] = [];
 
