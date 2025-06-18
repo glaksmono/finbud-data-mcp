@@ -1,6 +1,6 @@
 # Finbud Data TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/finbud-data.svg)](https://npmjs.org/package/finbud-data) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/finbud-data)
+[![NPM version](<https://img.shields.io/npm/v/finbud-data.svg?label=npm%20(stable)>)](https://npmjs.org/package/finbud-data) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/finbud-data)
 
 This library provides convenient access to the Finbud Data REST API from server-side TypeScript or JavaScript.
 
