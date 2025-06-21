@@ -1,6 +1,6 @@
 # Finbud Data TypeScript API Library
 
-[![NPM version](https://img.shields.io/npm/v/finbud-data.svg)](https://npmjs.org/package/finbud-data) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/finbud-data)
+[![NPM version](<https://img.shields.io/npm/v/finbud-data.svg?label=npm%20(stable)>)](https://npmjs.org/package/finbud-data) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/finbud-data)
 
 This library provides convenient access to the Finbud Data REST API from server-side TypeScript or JavaScript.
 
@@ -26,11 +26,7 @@ const client = new FinbudData({
   apiKey: process.env['FINBUD_DATA_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const response = await client.analysts.retrieveEstimates('REPLACE_ME');
-}
-
-main();
+const response = await client.analysts.retrieveEstimates('REPLACE_ME');
 ```
 
 ### Request & Response types
@@ -45,13 +41,9 @@ const client = new FinbudData({
   apiKey: process.env['FINBUD_DATA_API_KEY'], // This is the default and can be omitted
 });
 
-async function main() {
-  const response: FinbudData.AnalystRetrieveEstimatesResponse = await client.analysts.retrieveEstimates(
-    'REPLACE_ME',
-  );
-}
-
-main();
+const response: FinbudData.AnalystRetrieveEstimatesResponse = await client.analysts.retrieveEstimates(
+  'REPLACE_ME',
+);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -64,22 +56,18 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-async function main() {
-  const response = await client.analysts.retrieveEstimates('REPLACE_ME').catch(async (err) => {
-    if (err instanceof FinbudData.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
-}
-
-main();
+const response = await client.analysts.retrieveEstimates('REPLACE_ME').catch(async (err) => {
+  if (err instanceof FinbudData.APIError) {
+    console.log(err.status); // 400
+    console.log(err.name); // BadRequestError
+    console.log(err.headers); // {server: 'nginx', ...}
+  } else {
+    throw err;
+  }
+});
 ```
 
-Error codes are as followed:
+Error codes are as follows:
 
 | Status Code | Error Type                 |
 | ----------- | -------------------------- |
@@ -236,9 +224,8 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.foo.create({
-  foo: 'my_param',
-  bar: 12,
+client.analysts.retrieveEstimates({
+  // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
 });
@@ -356,7 +343,7 @@ TypeScript >= 4.9 is supported.
 The following runtimes are supported:
 
 - Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
-- Node.js 18 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
+- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
 - Deno v1.28.0 or higher.
 - Bun 1.0 or later.
 - Cloudflare Workers.

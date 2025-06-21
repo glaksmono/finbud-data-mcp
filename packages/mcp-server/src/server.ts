@@ -2,16 +2,31 @@
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { endpoints, HandlerFunction } from './tools';
+import { Endpoint, endpoints, HandlerFunction, query } from './tools';
 import { CallToolRequestSchema, ListToolsRequestSchema, Tool } from '@modelcontextprotocol/sdk/types.js';
+import { ClientOptions } from 'finbud-data';
 import FinbudData from 'finbud-data';
+import {
+  applyCompatibilityTransformations,
+  ClientCapabilities,
+  defaultClientCapabilities,
+  knownClients,
+  parseEmbeddedJSON,
+} from './compat';
+import { dynamicTools } from './dynamic-tools';
+import { McpOptions } from './options';
+
+export { McpOptions } from './options';
+export { ClientType } from './compat';
+export { Filter } from './tools';
+export { ClientOptions } from 'finbud-data';
 export { endpoints } from './tools';
 
 // Create server instance
 export const server = new McpServer(
   {
     name: 'finbud_data_api',
-    version: '0.0.1-alpha.1',
+    version: '0.1.0-alpha.1',
   },
   {
     capabilities: {
@@ -24,55 +39,92 @@ export const server = new McpServer(
  * Initializes the provided MCP Server with the given tools and handlers.
  * If not provided, the default client, tools and handlers will be used.
  */
+export function initMcpServer(params: {
+  server: Server | McpServer;
+  clientOptions: ClientOptions;
+  mcpOptions: McpOptions;
+  endpoints?: { tool: Tool; handler: HandlerFunction }[];
+}) {
+  const transformedEndpoints = selectTools(endpoints, params.mcpOptions);
+  const client = new FinbudData(params.clientOptions);
+  const capabilities = {
+    ...defaultClientCapabilities,
+    ...(params.mcpOptions.client ? knownClients[params.mcpOptions.client] : params.mcpOptions.capabilities),
+  };
+  init({ server: params.server, client, endpoints: transformedEndpoints, capabilities });
+}
+
 export function init(params: {
   server: Server | McpServer;
   client?: FinbudData;
   endpoints?: { tool: Tool; handler: HandlerFunction }[];
+  capabilities?: Partial<ClientCapabilities>;
 }) {
   const server = params.server instanceof McpServer ? params.server.server : params.server;
   const providedEndpoints = params.endpoints || endpoints;
-  const tools = providedEndpoints.map((endpoint) => endpoint.tool);
-  const handlers = Object.fromEntries(
-    providedEndpoints.map((endpoint) => [endpoint.tool.name, endpoint.handler]),
-  );
 
-  const client = params.client || new FinbudData({});
+  const endpointMap = Object.fromEntries(providedEndpoints.map((endpoint) => [endpoint.tool.name, endpoint]));
+
+  const client = params.client || new FinbudData({ defaultHeaders: { 'X-Stainless-MCP': 'true' } });
 
   server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
-      tools,
+      tools: providedEndpoints.map((endpoint) => endpoint.tool),
     };
   });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
-
-    const handler = handlers[name];
-    if (!handler) {
+    const endpoint = endpointMap[name];
+    if (!endpoint) {
       throw new Error(`Unknown tool: ${name}`);
     }
 
-    return executeHandler(handler, client, args);
+    return executeHandler(endpoint.tool, endpoint.handler, client, args, params.capabilities);
   });
+}
+
+/**
+ * Selects the tools to include in the MCP Server based on the provided options.
+ */
+export function selectTools(endpoints: Endpoint[], options: McpOptions) {
+  const filteredEndpoints = query(options.filters, endpoints);
+
+  let includedTools = filteredEndpoints;
+
+  if (includedTools.length > 0) {
+    if (options.includeDynamicTools) {
+      includedTools = dynamicTools(includedTools);
+    }
+  } else {
+    if (options.includeAllTools) {
+      includedTools = endpoints;
+    } else if (options.includeDynamicTools) {
+      includedTools = dynamicTools(endpoints);
+    } else {
+      includedTools = endpoints;
+    }
+  }
+
+  const capabilities = { ...defaultClientCapabilities, ...options.capabilities };
+  return applyCompatibilityTransformations(includedTools, capabilities);
 }
 
 /**
  * Runs the provided handler with the given client and arguments.
  */
 export async function executeHandler(
+  tool: Tool,
   handler: HandlerFunction,
   client: FinbudData,
   args: Record<string, unknown> | undefined,
+  compatibilityOptions?: Partial<ClientCapabilities>,
 ) {
-  const result = await handler(client, args || {});
-  return {
-    content: [
-      {
-        type: 'text',
-        text: JSON.stringify(result, null, 2),
-      },
-    ],
-  };
+  const options = { ...defaultClientCapabilities, ...compatibilityOptions };
+  if (options.validJson && args) {
+    args = parseEmbeddedJSON(args, tool.inputSchema);
+  }
+  return await handler(client, args || {});
 }
 
 export const readEnv = (env: string): string | undefined => {

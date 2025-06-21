@@ -6,7 +6,7 @@
     "rootDir": "./dist/src",
     "paths": {
       "finbud-data/*": ["dist/src/*"],
-      "finbud-data": ["dist/src/index.ts"],
+      "finbud-data": ["dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,

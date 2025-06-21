@@ -314,6 +314,28 @@ describe('instantiate client', () => {
       const client = new FinbudData({ apiKey: 'My API Key' });
       expect(client.baseURL).toEqual('/api');
     });
+
+    test('in request options', () => {
+      const client = new FinbudData({ apiKey: 'My API Key' });
+      expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
+        'http://localhost:5000/option/foo',
+      );
+    });
+
+    test('in request options overridden by client options', () => {
+      const client = new FinbudData({ apiKey: 'My API Key', baseURL: 'http://localhost:5000/client' });
+      expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
+        'http://localhost:5000/client/foo',
+      );
+    });
+
+    test('in request options overridden by env variable', () => {
+      process.env['FINBUD_DATA_BASE_URL'] = 'http://localhost:5000/env';
+      const client = new FinbudData({ apiKey: 'My API Key' });
+      expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
+        'http://localhost:5000/env/foo',
+      );
+    });
   });
 
   test('maxRetries option is correctly set', () => {
@@ -323,6 +345,82 @@ describe('instantiate client', () => {
     // default
     const client2 = new FinbudData({ apiKey: 'My API Key' });
     expect(client2.maxRetries).toEqual(2);
+  });
+
+  describe('withOptions', () => {
+    test('creates a new client with overridden options', () => {
+      const client = new FinbudData({
+        baseURL: 'http://localhost:5000/',
+        maxRetries: 3,
+        apiKey: 'My API Key',
+      });
+
+      const newClient = client.withOptions({
+        maxRetries: 5,
+        baseURL: 'http://localhost:5001/',
+      });
+
+      // Verify the new client has updated options
+      expect(newClient.maxRetries).toEqual(5);
+      expect(newClient.baseURL).toEqual('http://localhost:5001/');
+
+      // Verify the original client is unchanged
+      expect(client.maxRetries).toEqual(3);
+      expect(client.baseURL).toEqual('http://localhost:5000/');
+
+      // Verify it's a different instance
+      expect(newClient).not.toBe(client);
+      expect(newClient.constructor).toBe(client.constructor);
+    });
+
+    test('inherits options from the parent client', () => {
+      const client = new FinbudData({
+        baseURL: 'http://localhost:5000/',
+        defaultHeaders: { 'X-Test-Header': 'test-value' },
+        defaultQuery: { 'test-param': 'test-value' },
+        apiKey: 'My API Key',
+      });
+
+      const newClient = client.withOptions({
+        baseURL: 'http://localhost:5001/',
+      });
+
+      // Test inherited options remain the same
+      expect(newClient.buildURL('/foo', null)).toEqual('http://localhost:5001/foo?test-param=test-value');
+
+      const { req } = newClient.buildRequest({ path: '/foo', method: 'get' });
+      expect(req.headers.get('x-test-header')).toEqual('test-value');
+    });
+
+    test('respects runtime property changes when creating new client', () => {
+      const client = new FinbudData({
+        baseURL: 'http://localhost:5000/',
+        timeout: 1000,
+        apiKey: 'My API Key',
+      });
+
+      // Modify the client properties directly after creation
+      client.baseURL = 'http://localhost:6000/';
+      client.timeout = 2000;
+
+      // Create a new client with withOptions
+      const newClient = client.withOptions({
+        maxRetries: 10,
+      });
+
+      // Verify the new client uses the updated properties, not the original ones
+      expect(newClient.baseURL).toEqual('http://localhost:6000/');
+      expect(newClient.timeout).toEqual(2000);
+      expect(newClient.maxRetries).toEqual(10);
+
+      // Original client should still have its modified properties
+      expect(client.baseURL).toEqual('http://localhost:6000/');
+      expect(client.timeout).toEqual(2000);
+      expect(client.maxRetries).not.toEqual(10);
+
+      // Verify URL building uses the updated baseURL
+      expect(newClient.buildURL('/bar', null)).toEqual('http://localhost:6000/bar');
+    });
   });
 
   test('with environment variable arguments', () => {

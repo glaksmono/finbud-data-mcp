@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'finbud-data-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../../';
 import FinbudData from 'finbud-data';
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
   resource: 'options.trades',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/trades/last/{optionsTicker}',
+  operationId: 'getLastOptionTrade',
 };
 
 export const tool: Tool = {
@@ -23,9 +28,9 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { optionsTicker } = args;
-  return client.options.trades.retrieveLast(optionsTicker);
+export const handler = async (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { optionsTicker, ...body } = args as any;
+  return asTextContentResult(await client.options.trades.retrieveLast(optionsTicker));
 };
 
 export default { metadata, tool, handler };

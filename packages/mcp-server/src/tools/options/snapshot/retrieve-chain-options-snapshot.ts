@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'finbud-data-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../../';
 import FinbudData from 'finbud-data';
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
   resource: 'options.snapshot',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/options/snapshot/chain/{underlyingAsset}',
+  operationId: 'getOptionChainSnapshot',
 };
 
 export const tool: Tool = {
@@ -99,9 +104,9 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { underlyingAsset, ...body } = args;
-  return client.options.snapshot.retrieveChain(underlyingAsset, body);
+export const handler = async (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { underlyingAsset, ...body } = args as any;
+  return asTextContentResult(await client.options.snapshot.retrieveChain(underlyingAsset, body));
 };
 
 export default { metadata, tool, handler };

@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'finbud-data-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../../';
 import FinbudData from 'finbud-data';
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
   resource: 'market.overview',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/market/overview/active',
+  operationId: 'getMarketMostActive',
 };
 
 export const tool: Tool = {
@@ -19,9 +24,8 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const {} = args;
-  return client.market.overview.listActive();
+export const handler = async (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  return asTextContentResult(await client.market.overview.listActive());
 };
 
 export default { metadata, tool, handler };

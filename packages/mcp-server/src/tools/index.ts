@@ -1,7 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import FinbudData from 'finbud-data';
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { Metadata, Endpoint, HandlerFunction } from './types';
+
+export { Metadata, Endpoint, HandlerFunction };
 
 import retrieve_estimates_analysts from './analysts/retrieve-estimates-analysts';
 import retrieve_price_targets_analysts from './analysts/retrieve-price-targets-analysts';
@@ -39,20 +40,6 @@ import retrieve_last_options_trades from './options/trades/retrieve-last-options
 import retrieve_quotes from './quotes/retrieve-quotes';
 import general_search_search from './search/general-search-search';
 import retrieve_indicator_data_technicals from './technicals/retrieve-indicator-data-technicals';
-
-export type HandlerFunction = (client: FinbudData, args: any) => Promise<any>;
-
-export type Metadata = {
-  resource: string;
-  operation: 'read' | 'write';
-  tags: string[];
-};
-
-export type Endpoint = {
-  metadata: Metadata;
-  tool: Tool;
-  handler: HandlerFunction;
-};
 
 export const endpoints: Endpoint[] = [];
 
@@ -104,22 +91,33 @@ export type Filter = {
 };
 
 export function query(filters: Filter[], endpoints: Endpoint[]): Endpoint[] {
-  if (filters.length === 0) {
-    return endpoints;
-  }
-  const allExcludes = filters.every((filter) => filter.op === 'exclude');
+  const allExcludes = filters.length > 0 && filters.every((filter) => filter.op === 'exclude');
+  const unmatchedFilters = new Set(filters);
 
-  return endpoints.filter((endpoint: Endpoint) => {
+  const filtered = endpoints.filter((endpoint: Endpoint) => {
     let included = false || allExcludes;
 
     for (const filter of filters) {
       if (match(filter, endpoint)) {
+        unmatchedFilters.delete(filter);
         included = filter.op === 'include';
       }
     }
 
     return included;
   });
+
+  // Check if any filters didn't match
+  const unmatched = Array.from(unmatchedFilters).filter((f) => f.type === 'tool' || f.type === 'resource');
+  if (unmatched.length > 0) {
+    throw new Error(
+      `The following filters did not match any endpoints: ${unmatched
+        .map((f) => `${f.type}=${f.value}`)
+        .join(', ')}`,
+    );
+  }
+
+  return filtered;
 }
 
 function match({ type, value }: Filter, endpoint: Endpoint): boolean {

@@ -1,5 +1,7 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+import { asTextContentResult } from 'finbud-data-mcp/tools/types';
+
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import type { Metadata } from '../';
 import FinbudData from 'finbud-data';
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
   resource: 'technicals',
   operation: 'read',
   tags: [],
+  httpMethod: 'get',
+  httpPath: '/technicals/{indicator}/{symbol}/{interval}',
+  operationId: 'getTechnicalIndicator',
 };
 
 export const tool: Tool = {
@@ -47,9 +52,9 @@ export const tool: Tool = {
   },
 };
 
-export const handler = (client: FinbudData, args: any) => {
-  const { interval, ...body } = args;
-  return client.technicals.retrieveIndicatorData(interval, body);
+export const handler = async (client: FinbudData, args: Record<string, unknown> | undefined) => {
+  const { interval, ...body } = args as any;
+  return asTextContentResult(await client.technicals.retrieveIndicatorData(interval, body));
 };
 
 export default { metadata, tool, handler };
