@@ -14,6 +14,10 @@ It is generated with [Stainless](https://www.stainless.com/).
 npm install finbud-data
 ```
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/glaksmono-finbud-data-mcp).
+
 ## Usage
 
 The full API of this library can be found in [api.md](api.md).
